@@ -1,0 +1,381 @@
+name: Release
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'auto'
+        type: choice
+        options:
+          - auto
+          - patch
+          - minor
+          - major
+          - prerelease
+
+# Разрешаем только один релиз одновременно
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  # Проверяем, нужен ли релиз
+  check-release:
+    name: Check Release Need
+    runs-on: ubuntu-latest
+    outputs:
+      should_release: ${{ steps.check.outputs.should_release }}
+      release_type: ${{ steps.check.outputs.release_type }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Check if release is needed
+        id: check
+        run: |
+          # Если запущено вручную, используем указанный тип
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "should_release=true" >> $GITHUB_OUTPUT
+            echo "release_type=${{ github.event.inputs.release_type }}" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Получаем последний тег
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "Last tag: $LAST_TAG"
+
+          # Получаем коммиты с последнего тега
+          COMMITS=$(git log ${LAST_TAG}..HEAD --oneline)
+
+          if [ -z "$COMMITS" ]; then
+            echo "No new commits since last release"
+            echo "should_release=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "New commits found:"
+          echo "$COMMITS"
+
+          # Анализируем типы коммитов для определения типа релиза
+          HAS_BREAKING=$(echo "$COMMITS" | grep -E "BREAKING CHANGE|!:" || true)
+          HAS_FEAT=$(echo "$COMMITS" | grep -E "^[a-f0-9]+ feat" || true)
+          HAS_FIX=$(echo "$COMMITS" | grep -E "^[a-f0-9]+ fix" || true)
+
+          if [ -n "$HAS_BREAKING" ]; then
+            RELEASE_TYPE="major"
+          elif [ -n "$HAS_FEAT" ]; then
+            RELEASE_TYPE="minor"
+          elif [ -n "$HAS_FIX" ]; then
+            RELEASE_TYPE="patch"
+          else
+            echo "No release-worthy commits found"
+            echo "should_release=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "should_release=true" >> $GITHUB_OUTPUT
+          echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
+          echo "Determined release type: $RELEASE_TYPE"
+
+  # Запускаем полные тесты перед релизом
+  pre-release-tests:
+    name: Pre-Release Tests
+    runs-on: ubuntu-latest
+    needs: check-release
+    if: needs.check-release.outputs.should_release == 'true'
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+            node_modules
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run all checks
+        run: |
+          echo "Running comprehensive pre-release checks..."
+
+          # TypeScript проверка
+          echo "Checking TypeScript..."
+          bun run type-check
+
+          # Линтинг
+          echo "Running linter..."
+          bun run lint
+
+          # Форматирование
+          echo "Checking formatting..."
+          bun run format:check
+
+          # Unit тесты
+          echo "Running unit tests..."
+          bun run test:unit
+
+          # Integration тесты
+          echo "Running integration tests..."
+          bun run test:integration
+
+          # Сборка
+          echo "Building application..."
+          bun run build
+
+          # Анализ bundle
+          echo "Analyzing bundle..."
+          bun run build:analyze
+
+          # Проверка безопасности
+          echo "Running security audit..."
+          bun audit --audit-level=high
+
+          echo "All pre-release checks passed! ✅"
+
+  # Создаем релиз
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: [check-release, pre-release-tests]
+    if: needs.check-release.outputs.should_release == 'true'
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Generate changelog
+        run: |
+          # Устанавливаем conventional-changelog-cli
+          bun add -D conventional-changelog-cli
+
+          # Генерируем changelog
+          npx conventional-changelog -p angular -i CHANGELOG.md -s -r 0
+
+          # Если файл не существует, создаем его
+          if [ ! -f CHANGELOG.md ]; then
+            echo "# Changelog" > CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            npx conventional-changelog -p angular -i CHANGELOG.md -s
+          fi
+
+      - name: Determine new version
+        id: version
+        run: |
+          # Получаем текущую версию из package.json
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $CURRENT_VERSION"
+
+          # Определяем новую версию
+          RELEASE_TYPE="${{ needs.check-release.outputs.release_type }}"
+
+          if [ "$RELEASE_TYPE" = "auto" ]; then
+            # Автоматическое определение уже сделано в check-release
+            RELEASE_TYPE="${{ needs.check-release.outputs.release_type }}"
+          fi
+
+          # Вычисляем новую версию
+          IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
+          MAJOR=${VERSION_PARTS[0]}
+          MINOR=${VERSION_PARTS[1]}
+          PATCH=${VERSION_PARTS[2]}
+
+          case $RELEASE_TYPE in
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              ;;
+            patch)
+              PATCH=$((PATCH + 1))
+              ;;
+            prerelease)
+              PATCH=$((PATCH + 1))
+              NEW_VERSION="$MAJOR.$MINOR.$PATCH-beta.$(date +%s)"
+              ;;
+          esac
+
+          if [ "$RELEASE_TYPE" != "prerelease" ]; then
+            NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+          fi
+
+          echo "New version: $NEW_VERSION"
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "release_type=$RELEASE_TYPE" >> $GITHUB_OUTPUT
+
+      - name: Update package.json version
+        run: |
+          NEW_VERSION="${{ steps.version.outputs.new_version }}"
+
+          # Обновляем версию в package.json
+          node -e "
+            const pkg = require('./package.json');
+            pkg.version = '$NEW_VERSION';
+            require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+
+          echo "Updated package.json to version $NEW_VERSION"
+
+      - name: Build release assets
+        run: |
+          # Собираем production версию
+          bun run build
+
+          # Создаем архив с build файлами
+          tar -czf build-${{ steps.version.outputs.new_version }}.tar.gz dist/
+
+          # Создаем архив с исходным кодом (без node_modules)
+          tar --exclude='node_modules' --exclude='.git' --exclude='dist' \
+              -czf source-${{ steps.version.outputs.new_version }}.tar.gz .
+
+      - name: Commit version bump
+        run: |
+          git add package.json CHANGELOG.md
+          git commit -m "chore(release): bump version to ${{ steps.version.outputs.new_version }}"
+          git tag -a "v${{ steps.version.outputs.new_version }}" -m "Release v${{ steps.version.outputs.new_version }}"
+
+      - name: Push changes
+        run: |
+          git push origin ${{ github.ref_name }}
+          git push origin "v${{ steps.version.outputs.new_version }}"
+
+      - name: Extract release notes
+        id: release_notes
+        run: |
+          # Извлекаем release notes из CHANGELOG.md
+          if [ -f CHANGELOG.md ]; then
+            # Получаем содержимое между первыми двумя заголовками
+            RELEASE_NOTES=$(sed -n '/^## /,/^## /p' CHANGELOG.md | sed '$d' | tail -n +2)
+
+            if [ -z "$RELEASE_NOTES" ]; then
+              RELEASE_NOTES="No changelog entries found."
+            fi
+          else
+            RELEASE_NOTES="No changelog available."
+          fi
+
+          # Сохраняем в файл для GitHub Release
+          echo "$RELEASE_NOTES" > release_notes.md
+
+          echo "Release notes:"
+          cat release_notes.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.new_version }}
+          name: Release v${{ steps.version.outputs.new_version }}
+          body_path: release_notes.md
+          draft: false
+          prerelease: ${{ steps.version.outputs.release_type == 'prerelease' }}
+          files: |
+            build-${{ steps.version.outputs.new_version }}.tar.gz
+            source-${{ steps.version.outputs.new_version }}.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Post-release notification
+        run: |
+          echo "🎉 Release v${{ steps.version.outputs.new_version }} created successfully!"
+          echo "Release type: ${{ steps.version.outputs.release_type }}"
+          echo "Release URL: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.version.outputs.new_version }}"
+
+  # Уведомления о релизе
+  notify:
+    name: Post-Release Notifications
+    runs-on: ubuntu-latest
+    needs: [release]
+    if: always() && needs.release.result == 'success'
+
+    steps:
+      - name: Create deployment issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const version = '${{ needs.release.outputs.new_version }}';
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚀 Deploy v${version} to Production`,
+              body: `# Deployment Checklist for v${version}
+
+              A new release has been created and is ready for deployment.
+
+              ## Pre-deployment Checklist
+
+              - [ ] Review release notes
+              - [ ] Verify all tests pass
+              - [ ] Check staging deployment
+              - [ ] Backup current production
+              - [ ] Notify team about deployment
+
+              ## Deployment Steps
+
+              - [ ] Deploy to staging
+              - [ ] Run smoke tests on staging
+              - [ ] Deploy to production
+              - [ ] Run post-deployment checks
+              - [ ] Monitor application health
+
+              ## Post-deployment
+
+              - [ ] Verify all features work correctly
+              - [ ] Check error rates and performance
+              - [ ] Update documentation if needed
+              - [ ] Close this issue
+
+              ---
+              **Release:** [v${version}](https://github.com/${context.repo.owner}/${context.repo.repo}/releases/tag/v${version})
+              **Created:** ${new Date().toISOString()}`,
+              labels: ['deployment', 'release', 'production']
+            });

@@ -1,0 +1,44 @@
+# Пример локальной конфигурации Lefthook
+# Скопируйте этот файл в lefthook-local.yml и настройте под себя
+# lefthook-local.yml автоматически игнорируется Git
+
+# Отключить определенные хуки
+# skip_output:
+#   - meta
+#   - summary
+
+# Переопределить команды для локальной разработки
+pre-commit:
+  commands:
+    # Отключить проверку типов для быстрых коммитов
+    # type-check:
+    #   skip: true
+    
+    # Использовать более быстрый линтер
+    # lint-staged:
+    #   run: npm run lint:dev:staged
+    
+    # Отключить тесты в pre-commit
+    # test-related:
+    #   skip: true
+
+pre-push:
+  commands:
+    # Отключить сборку для экономии времени
+    # build-check:
+    #   skip: true
+    
+    # Использовать быстрые тесты
+    # test-full:
+    #   run: npm run test:fast
+
+# Локальные скрипты
+# scripts:
+#   custom-check.sh: |
+#     #!/bin/bash
+#     echo "Running custom local check..."
+
+# Переменные окружения для локальной разработки
+# env:
+#   NODE_ENV: development
+#   DEBUG: true

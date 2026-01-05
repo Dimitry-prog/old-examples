@@ -1,0 +1,42 @@
+{
+  "threshold": 3,
+  "reporters": ["console", "json"],
+  "output": "./reports/duplication",
+  "ignore": [
+    "node_modules/**",
+    "dist/**",
+    "build/**",
+    "coverage/**",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.d.ts",
+    "src/test/**",
+    "src/mocks/**",
+    "**/*.stories.ts",
+    "**/*.stories.tsx",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "tailwind.config.js",
+    "postcss.config.js"
+  ],
+  "gitignore": true,
+  "minLines": 5,
+  "minTokens": 50,
+  "maxLines": 1000,
+  "maxSize": "30kb",
+  "formatsExts": {
+    "typescript": ["ts", "tsx"],
+    "javascript": ["js", "jsx"],
+    "json": ["json"],
+    "yaml": ["yml", "yaml"],
+    "markdown": ["md"]
+  },
+  "format": ["typescript", "javascript"],
+  "blame": true,
+  "silent": false,
+  "verbose": false,
+  "debug": false,
+  "executionId": "modern-react-stack"
+}

@@ -1,0 +1,37 @@
+.wrapper {
+	padding: 10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 10px;
+	cursor: auto;
+
+	@media (max-width: 767px) {
+		flex-direction: column;
+	}
+
+	&_loading {
+		cursor: none;
+		pointer-events: none;
+	}
+}
+
+.left {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.right {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	@media (max-width: 767px) {
+		justify-content: initial;
+	}
+
+	& > button {
+		font-size: 18px;
+	}
+}

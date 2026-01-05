@@ -1,0 +1,43 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "hello": "Hello",
+    "goodbye": "Goodbye",
+    "language": "Language",
+    "english": "English",
+    "spanish": "Spanish",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "update": "Update",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "settings": "Settings",
+    "profile": "Profile",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register"
+  },
+  "main-page": {
+    "title": "Welcome to Our Application",
+    "subtitle": "Your journey starts here",
+    "description": "Discover amazing features and capabilities"
+  },
+  "apple": {
+    "zero": "No apples",
+    "one": "One apple",
+    "other": "{{count}} apples"
+  },
+  "more-items": "{{count}} more items available",
+  "allowed-symbols": "Allowed symbols: {{symbols}}",
+  "greeting": "Hello, {{name}}! Welcome back."
+}

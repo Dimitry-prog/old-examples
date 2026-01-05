@@ -1,0 +1,28 @@
+# Global code owners
+* @team-leads
+
+# Frontend code
+/src/ @frontend-team
+/public/ @frontend-team
+
+# Configuration files
+*.json @devops-team
+*.yml @devops-team
+*.yaml @devops-team
+*.config.* @devops-team
+
+# GitHub workflows
+/.github/ @devops-team
+
+# Documentation
+*.md @docs-team
+/docs/ @docs-team
+
+# Tests
+/tests/ @qa-team
+**/*.test.* @qa-team
+**/*.spec.* @qa-team
+
+# Security sensitive files
+/scripts/ @security-team
+/.env* @security-team

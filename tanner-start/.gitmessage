@@ -1,0 +1,45 @@
+# <type>(<scope>): <subject>
+#
+# <body>
+#
+# <footer>
+
+# --- COMMIT END ---
+# Помните о правилах:
+# 
+# Заголовок (первая строка):
+# - Используйте один из типов: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
+# - Scope (область) в скобках (необязательно): components, api, hooks, utils, etc.
+# - Subject (описание) в повелительном наклонении, без точки в конце
+# - Максимум 100 символов
+#
+# Тело коммита (необязательно):
+# - Объясните ЧТО и ПОЧЕМУ, а не КАК
+# - Максимум 100 символов на строку
+# - Отделите от заголовка пустой строкой
+#
+# Футер (необязательно):
+# - Ссылки на issues: "Fixes #123", "Closes #456"
+# - Breaking changes: "BREAKING CHANGE: описание"
+# - Отделите от тела пустой строкой
+#
+# Примеры:
+# feat(auth): add login functionality
+# fix(api): handle network timeout errors
+# docs: update installation guide
+# style: format code with prettier
+# refactor(hooks): simplify useAuth implementation
+# perf(bundle): reduce initial load time
+# test(components): add Button component tests
+# build(deps): update react to v19
+# ci: add automated testing workflow
+# chore: update .gitignore
+#
+# С телом и футером:
+# feat(auth): add OAuth2 integration
+#
+# Implement OAuth2 authentication flow with Google and GitHub providers.
+# This allows users to sign in using their existing accounts.
+#
+# Closes #123
+# BREAKING CHANGE: removed legacy authentication methods

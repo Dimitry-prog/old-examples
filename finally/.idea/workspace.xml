@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6118f5ec-5ec0-48f8-b48b-79de317763af" name="Changes" comment="is it works">
+      <change afterPath="$PROJECT_DIR$/.github/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.github/workflows/ci.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.github/workflows/deploy.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CONTRIBUTING.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/biome.dev.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/biome.prod.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commitlint.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lefthook.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/logo192.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/logo512.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/manifest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/robots.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/tanstack-circle-logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/tanstack-word-logo-white.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Header.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/demo.FormComponents.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/hooks/demo.form-context.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/hooks/demo.form.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/logo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/reportWebVitals.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/__root.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/demo/form.address.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/demo/form.simple.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared/components/ui/button/button.test.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared/components/ui/button/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared/components/ui/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared/components/ui/spinner.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared/components/ui/table/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared/libs/router/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared/libs/router/routeTree.gen.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared/libs/utils/cn/cn.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared/libs/utils/cn/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared/libs/utils/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/styles.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/example.test.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/setup.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vite.config.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vitest.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="350ZeYZEI7yCWBSVdRbqrOatiBz" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\webWork\\my_self\\finally\\node_modules\\typescript\\lib&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\webWork\my_self\finally\src\shared\components\ui\button" />
+      <recent name="D:\webWork\my_self\finally\src\shared\components\ui\table" />
+      <recent name="D:\webWork\my_self\finally\src\shared\libs" />
+      <recent name="D:\webWork\my_self\finally\src\shared" />
+      <recent name="D:\webWork\my_self\finally\src\shared\libs\router" />
+    </key>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6118f5ec-5ec0-48f8-b48b-79de317763af" name="Changes" comment="" />
+      <created>1762249047561</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1762249047561</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="is it works" />
+    <option name="LAST_COMMIT_MESSAGE" value="is it works" />
+  </component>
+</project>

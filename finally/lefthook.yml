@@ -1,0 +1,35 @@
+# Lefthook configuration
+# https://github.com/evilmartians/lefthook
+
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: "*.{js,ts,jsx,tsx,json}"
+      run: pnpm biome format --write --no-errors-on-unmatched --staged {staged_files}
+    lint:
+      glob: "*.{js,ts,jsx,tsx}"
+      run: pnpm biome lint --write --no-errors-on-unmatched --staged {staged_files}
+    types:
+      glob: "*.{ts,tsx}"
+      run: pnpm tsc --noEmit
+    test-related:
+      glob: "*.{test,spec}.{ts,tsx}"
+      run: pnpm test --run --reporter=verbose --changed
+
+pre-push:
+  parallel: false
+  commands:
+    check:
+      run: pnpm check
+    test:
+      run: pnpm test
+    test-coverage:
+      run: |
+        echo "📊 Checking test coverage..."
+        pnpm test:coverage
+
+commit-msg:
+  commands:
+    commitlint:
+      run: npx commitlint --edit {1}

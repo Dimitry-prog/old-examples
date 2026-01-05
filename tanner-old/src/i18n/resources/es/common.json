@@ -1,0 +1,43 @@
+{
+  "common": {
+    "welcome": "Bienvenido",
+    "hello": "Hola",
+    "goodbye": "Adiós",
+    "language": "Idioma",
+    "english": "Inglés",
+    "spanish": "Español",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "update": "Actualizar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "home": "Inicio",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "settings": "Configuración",
+    "profile": "Perfil",
+    "logout": "Cerrar sesión",
+    "login": "Iniciar sesión",
+    "register": "Registrarse"
+  },
+  "main-page": {
+    "title": "Bienvenido a Nuestra Aplicación",
+    "subtitle": "Tu viaje comienza aquí",
+    "description": "Descubre características y capacidades increíbles"
+  },
+  "apple": {
+    "zero": "Sin manzanas",
+    "one": "Una manzana",
+    "other": "{{count}} manzanas"
+  },
+  "more-items": "{{count}} elementos más disponibles",
+  "allowed-symbols": "Símbolos permitidos: {{symbols}}",
+  "greeting": "¡Hola, {{name}}! Bienvenido de vuelta."
+}

@@ -1,0 +1,287 @@
+name: Dependency Updates
+
+on:
+  schedule:
+    # Запускаем каждый понедельник в 9:00 UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Позволяет запускать вручную
+
+jobs:
+  # Проверка обновлений зависимостей
+  check-updates:
+    name: Check for Updates
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Check for outdated packages
+        run: |
+          echo "## Outdated Packages Report" > outdated-report.md
+          echo "" >> outdated-report.md
+
+          # Проверяем устаревшие пакеты
+          if bun outdated --format=json > outdated.json 2>/dev/null; then
+            echo "Found outdated packages:"
+            cat outdated.json
+
+            # Создаем отчет
+            echo "### Production Dependencies" >> outdated-report.md
+            echo "" >> outdated-report.md
+            echo "| Package | Current | Latest | Type |" >> outdated-report.md
+            echo "|---------|---------|--------|------|" >> outdated-report.md
+
+            # Парсим JSON и добавляем в отчет (упрощенная версия)
+            echo "See full report in the workflow logs." >> outdated-report.md
+          else
+            echo "No outdated packages found or error occurred."
+            echo "✅ All packages are up to date!" >> outdated-report.md
+          fi
+
+      - name: Create issue for outdated packages
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            // Читаем отчет
+            let report = '';
+            try {
+              report = fs.readFileSync('outdated-report.md', 'utf8');
+            } catch (error) {
+              report = '❌ Failed to generate outdated packages report.';
+            }
+
+            // Проверяем, есть ли уже открытый issue
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'dependencies,automated'
+            });
+
+            const existingIssue = issues.data.find(issue =>
+              issue.title.includes('Weekly Dependency Update Report')
+            );
+
+            const issueBody = `# Weekly Dependency Update Report
+
+            This is an automated report of outdated dependencies in the project.
+
+            ${report}
+
+            ## Actions Required
+
+            - [ ] Review the outdated packages
+            - [ ] Update critical security patches immediately
+            - [ ] Plan updates for major version changes
+            - [ ] Test thoroughly after updates
+
+            ## Automation
+
+            This issue is created automatically every Monday. Close it when all updates are reviewed.
+
+            ---
+            *Generated on: ${new Date().toISOString()}*`;
+
+            if (existingIssue) {
+              // Обновляем существующий issue
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: issueBody
+              });
+
+              console.log(`Updated existing issue #${existingIssue.number}`);
+            } else {
+              // Создаем новый issue
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `Weekly Dependency Update Report - ${new Date().toISOString().split('T')[0]}`,
+                body: issueBody,
+                labels: ['dependencies', 'automated', 'maintenance']
+              });
+
+              console.log('Created new dependency update issue');
+            }
+
+  # Автоматическое обновление patch версий
+  auto-update-patches:
+    name: Auto Update Patches
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: check-updates
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Update patch versions
+        run: |
+          # Обновляем только patch версии (безопасные обновления)
+          bun update --patch
+
+          # Проверяем, есть ли изменения
+          if git diff --quiet package.json bun.lockb; then
+            echo "No patch updates available"
+            echo "has_updates=false" >> $GITHUB_ENV
+          else
+            echo "Patch updates found"
+            echo "has_updates=true" >> $GITHUB_ENV
+          fi
+
+      - name: Run tests after updates
+        if: env.has_updates == 'true'
+        run: |
+          bun install
+          bun run type-check
+          bun run lint
+          bun run test:unit
+          bun run build
+
+      - name: Create PR for patch updates
+        if: env.has_updates == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'build(deps): update patch versions'
+          title: 'build(deps): automated patch version updates'
+          body: |
+            ## Automated Dependency Updates
+
+            This PR contains automated patch version updates for dependencies.
+
+            ### Changes
+            - Updated patch versions of dependencies
+            - All tests pass
+            - No breaking changes expected
+
+            ### Verification
+            - [x] TypeScript compilation passes
+            - [x] Linting passes
+            - [x] Unit tests pass
+            - [x] Build succeeds
+
+            This PR was created automatically by the dependency update workflow.
+
+            **Safe to merge** - these are patch updates only.
+          branch: automated/patch-updates
+          labels: |
+            dependencies
+            automated
+            patch-updates
+          reviewers: |
+            # Add your team members here
+          draft: false
+
+  # Проверка безопасности зависимостей
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run security audit
+        run: |
+          # Запускаем аудит безопасности
+          if ! bun audit --audit-level=high; then
+            echo "Security vulnerabilities found!"
+
+            # Создаем отчет
+            bun audit --audit-level=low --json > security-report.json || true
+
+            echo "SECURITY_ISSUES=true" >> $GITHUB_ENV
+          else
+            echo "No security issues found"
+            echo "SECURITY_ISSUES=false" >> $GITHUB_ENV
+          fi
+
+      - name: Create security issue
+        if: env.SECURITY_ISSUES == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            let securityReport = '';
+            try {
+              const reportData = fs.readFileSync('security-report.json', 'utf8');
+              securityReport = '```json\n' + reportData + '\n```';
+            } catch (error) {
+              securityReport = 'Failed to read security report.';
+            }
+
+            // Проверяем, есть ли уже открытый security issue
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'security,dependencies'
+            });
+
+            const existingIssue = issues.data.find(issue =>
+              issue.title.includes('Security Vulnerabilities Detected')
+            );
+
+            const issueBody = `# 🚨 Security Vulnerabilities Detected
+
+            Automated security audit has detected vulnerabilities in dependencies.
+
+            ## Security Report
+
+            ${securityReport}
+
+            ## Actions Required
+
+            - [ ] Review all security vulnerabilities
+            - [ ] Update affected packages immediately
+            - [ ] Test the application after updates
+            - [ ] Verify no functionality is broken
+
+            ## Priority
+
+            **HIGH PRIORITY** - Security vulnerabilities should be addressed immediately.
+
+            ---
+            *Generated on: ${new Date().toISOString()}*`;
+
+            if (!existingIssue) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `🚨 Security Vulnerabilities Detected - ${new Date().toISOString().split('T')[0]}`,
+                body: issueBody,
+                labels: ['security', 'dependencies', 'high-priority', 'automated']
+              });
+
+              console.log('Created security vulnerability issue');
+            }

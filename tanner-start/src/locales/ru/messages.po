@@ -1,0 +1,302 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-10-15 19:52+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: ru\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/components/examples/I18nExample.tsx:252
+msgid "{count, plural, one {# балл} few {# балла} many {# баллов} other {# баллов}}"
+msgstr "{count, plural, one {# балл} few {# балла} many {# баллов} other {# баллов}}"
+
+#: src/components/examples/I18nExample.tsx:100
+msgid "{count, plural, one {# день} few {# дня} many {# дней} other {# дней}}"
+msgstr "{count, plural, one {# день} few {# дня} many {# дней} other {# дней}}"
+
+#: src/components/examples/I18nExample.tsx:112
+msgid "{count, plural, one {# сообщение} few {# сообщения} many {# сообщений} other {# сообщений}}"
+msgstr "{count, plural, one {# сообщение} few {# сообщения} many {# сообщений} other {# сообщений}}"
+
+#: src/components/examples/I18nExample.tsx:31
+msgid "1. Базовый перевод с Trans"
+msgstr "1. Базовый перевод с Trans"
+
+#: src/components/examples/I18nExample.tsx:46
+msgid "2. Интерполяция переменных"
+msgstr "2. Интерполяция переменных"
+
+#: src/components/examples/I18nExample.tsx:76
+msgid "3. Плюрализация"
+msgstr "3. Плюрализация"
+
+#: src/components/examples/I18nExample.tsx:128
+msgid "4. Переводы в атрибутах (t макрос)"
+msgstr "4. Переводы в атрибутах (t макрос)"
+
+#: src/components/examples/I18nExample.tsx:156
+msgid "5. Хелпер l() для простого синтаксиса"
+msgstr "5. Хелпер l() для простого синтаксиса"
+
+#: src/components/examples/I18nExample.tsx:189
+msgid "6. Trans с вложенными элементами"
+msgstr "6. Trans с вложенными элементами"
+
+#: src/components/examples/I18nExample.tsx:228
+msgid "7. Интерактивный пример"
+msgstr "7. Интерактивный пример"
+
+#: src/routes/$locale/_layout/index.tsx:44
+msgid "React 19, TanStack Router, Zustand, React Query"
+msgstr "React 19, TanStack Router, Zustand, React Query"
+
+#: src/routes/$locale/_layout/index.tsx:22
+msgid "Tailwind CSS и shadcn/ui для красивых интерфейсов"
+msgstr "Tailwind CSS и shadcn/ui для красивых интерфейсов"
+
+#: src/routes/$locale/_layout/index.tsx:28
+msgid "TypeScript с строгой конфигурацией"
+msgstr "TypeScript с строгой конфигурацией"
+
+#: src/routes/$locale/_layout/index.tsx:15
+msgid "Vite обеспечивает мгновенный HMR и быструю сборку"
+msgstr "Vite обеспечивает мгновенный HMR и быструю сборку"
+
+#: src/routes/$locale/_layout/index.tsx:33
+msgid "Vitest и React Testing Library из коробки"
+msgstr "Vitest и React Testing Library из коробки"
+
+#: src/routes/$locale/_layout/_authenticated/dashboard.tsx:70
+msgid "Активные пользователи"
+msgstr "Активные пользователи"
+
+#: src/routes/$locale/_layout/index.tsx:13
+msgid "Быстрая разработка"
+msgstr "Быстрая разработка"
+
+#: src/components/examples/I18nExample.tsx:61
+msgid "Ваше имя"
+msgstr "Ваше имя"
+
+#: src/components/examples/I18nExample.tsx:54
+msgid "Введите имя:"
+msgstr "Введите имя:"
+
+#: src/components/examples/I18nExample.tsx:139
+msgid "Введите текст здесь..."
+msgstr "Введите текст здесь..."
+
+#: src/routes/$locale/_layout/index.tsx:113
+msgid "Возможности"
+msgstr "Возможности"
+
+#: src/routes/$locale/_layout/login.tsx:16
+msgid "Войдите в свой аккаунт для продолжения"
+msgstr "Войдите в свой аккаунт для продолжения"
+
+#: src/routes/$locale/_layout/index.tsx:186
+msgid "Войти"
+msgstr "Войти"
+
+#: src/routes/$locale/_layout/index.tsx:116
+msgid "Все необходимое для быстрой разработки качественных приложений"
+msgstr "Все необходимое для быстрой разработки качественных приложений"
+
+#: src/routes/$locale/_layout/_authenticated/dashboard.tsx:54
+msgid "Всего пользователей"
+msgstr "Всего пользователей"
+
+#: src/components/examples/I18nExample.tsx:84
+msgid "Выберите количество:"
+msgstr "Выберите количество:"
+
+#: src/routes/$locale/_layout/index.tsx:174
+msgid "Готовы начать?"
+msgstr "Готовы начать?"
+
+#: src/components/examples/I18nExample.tsx:21
+msgid "Демонстрация различных способов работы с переводами в React приложении"
+msgstr "Демонстрация различных способов работы с переводами в React приложении"
+
+#: src/components/examples/I18nExample.tsx:132
+msgid "Для атрибутов (placeholder, title, aria-label) используйте макрос t:"
+msgstr "Для атрибутов (placeholder, title, aria-label) используйте макрос t:"
+
+#: src/routes/$locale/_layout/login.tsx:15
+msgid "Добро пожаловать"
+msgstr "Добро пожаловать"
+
+#: src/routes/$locale/_layout/_authenticated/dashboard.tsx:37
+msgid "Добро пожаловать в защищенную область приложения"
+msgstr "Добро пожаловать в защищенную область приложения"
+
+#: src/components/examples/I18nExample.tsx:38
+msgid "Добро пожаловать в наше приложение!"
+msgstr "Добро пожаловать в наше приложение!"
+
+#: src/routes/$locale/_layout/index.tsx:195
+msgid "Документация"
+msgstr "Документация"
+
+#: src/routes/$locale/_layout/_authenticated/dashboard.tsx:84
+msgid "Доход"
+msgstr "Доход"
+
+#: src/routes/$locale/_layout/login.tsx:19
+msgid "На главную"
+msgstr "На главную"
+
+#: src/components/examples/I18nExample.tsx:145
+msgid "Нажмите для отправки формы"
+msgstr "Нажмите для отправки формы"
+
+#: src/components/examples/I18nExample.tsx:111
+msgid "Найдено"
+msgstr "Найдено"
+
+#: src/routes/$locale/_layout/index.tsx:90
+msgid "Начать работу"
+msgstr "Начать работу"
+
+#: src/routes/$locale/_layout/about.tsx:12
+msgid "О проекте"
+msgstr "О проекте"
+
+#: src/routes/$locale/_layout/index.tsx:38
+msgid "Оптимизированная сборка и code splitting"
+msgstr "Оптимизированная сборка и code splitting"
+
+#: src/components/examples/I18nExample.tsx:148
+msgid "Отправить"
+msgstr "Отправить"
+
+#: src/routes/$locale/_layout/_authenticated/dashboard.tsx:36
+msgid "Панель управления"
+msgstr "Панель управления"
+
+#: src/components/examples/I18nExample.tsx:209
+msgid "Пожалуйста, прочитайте <0>документацию</0> для получения дополнительной информации"
+msgstr "Пожалуйста, прочитайте <0>документацию</0> для получения дополнительной информации"
+
+#: src/routes/$locale/_layout/index.tsx:78
+msgid "Полнофункциональный стартовый шаблон для создания современных React приложений с лучшими практиками и инструментами"
+msgstr "Полнофункциональный стартовый шаблон для создания современных React приложений с лучшими практиками и инструментами"
+
+#: src/components/examples/I18nExample.tsx:249
+msgid "Пользователь <0>{name}</0> имеет "
+msgstr "Пользователь <0>{name}</0> имеет "
+
+#: src/components/examples/I18nExample.tsx:67
+msgid "Привет, {name}! Рады видеть тебя здесь."
+msgstr "Привет, {name}! Рады видеть тебя здесь."
+
+#: src/components/examples/I18nExample.tsx:167
+msgid "Пример 1:"
+msgstr "Пример 1:"
+
+#: src/components/examples/I18nExample.tsx:173
+msgid "Пример 2:"
+msgstr "Пример 2:"
+
+#: src/components/examples/I18nExample.tsx:18
+msgid "Примеры использования Lingui"
+msgstr "Примеры использования Lingui"
+
+#: src/components/examples/I18nExample.tsx:179
+msgid "Примечание: Для l() нужно вручную добавлять ключи в messages.po"
+msgstr "Примечание: Для l() нужно вручную добавлять ключи в messages.po"
+
+#: src/routes/$locale/_layout/index.tsx:69
+msgid "Проект инициализирован с последними версиями"
+msgstr "Проект инициализирован с последними версиями"
+
+#: src/routes/$locale/_layout/index.tsx:37
+msgid "Производительность"
+msgstr "Производительность"
+
+#: src/components/examples/I18nExample.tsx:35
+msgid "Простой текст без переменных:"
+msgstr "Простой текст без переменных:"
+
+#: src/routes/$locale/_layout/_authenticated/dashboard.tsx:100
+msgid "Рост"
+msgstr "Рост"
+
+#: src/routes/$locale/_layout/index.tsx:142
+msgid "Современные и проверенные инструменты"
+msgstr "Современные и проверенные инструменты"
+
+#: src/routes/$locale/_layout/about.tsx:15
+msgid "Современный React стартовый шаблон с лучшими практиками разработки, полной типобезопасностью и готовой инфраструктурой"
+msgstr "Современный React стартовый шаблон с лучшими практиками разработки, полной типобезопасностью и готовой инфраструктурой"
+
+#: src/routes/$locale/_layout/index.tsx:20
+msgid "Современный UI"
+msgstr "Современный UI"
+
+#: src/routes/$locale/_layout/index.tsx:42
+msgid "Современный стек"
+msgstr "Современный стек"
+
+#: src/routes/$locale/_layout/index.tsx:177
+msgid "Создайте свое первое приложение прямо сейчас"
+msgstr "Создайте свое первое приложение прямо сейчас"
+
+#: src/routes/$locale/_layout/_authenticated/dashboard.tsx:44
+msgid "Создать отчет"
+msgstr "Создать отчет"
+
+#: src/routes/$locale/_layout/index.tsx:32
+msgid "Тестирование"
+msgstr "Тестирование"
+
+#: src/routes/$locale/_layout/index.tsx:139
+msgid "Технологический стек"
+msgstr "Технологический стек"
+
+#: src/routes/$locale/_layout/index.tsx:27
+msgid "Типобезопасность"
+msgstr "Типобезопасность"
+
+#: src/components/examples/I18nExample.tsx:99
+msgid "У вас"
+msgstr "У вас"
+
+#: src/components/examples/I18nExample.tsx:194
+msgid "У вас <0>{count}</0> непрочитанных сообщений"
+msgstr "У вас <0>{count}</0> непрочитанных сообщений"
+
+#: src/components/examples/I18nExample.tsx:244
+msgid "Увеличить"
+msgstr "Увеличить"
+
+#: src/routes/$locale/_layout/index.tsx:100
+msgid "Узнать больше"
+msgstr "Узнать больше"
+
+#: src/components/examples/I18nExample.tsx:237
+msgid "Уменьшить"
+msgstr "Уменьшить"
+
+#: src/components/examples/I18nExample.tsx:160
+msgid "Функция l() удобна для переводов вне JSX или с ручными ключами:"
+msgstr "Функция l() удобна для переводов вне JSX или с ручными ключами:"
+
+#: src/routes/$locale/_layout/_authenticated/dashboard.tsx:41
+msgid "Экспорт"
+msgstr "Экспорт"
+
+#: src/components/examples/I18nExample.tsx:201
+msgid "Это <0>важное</0> уведомление для <1>{name}</1>"
+msgstr "Это <0>важное</0> уведомление для <1>{name}</1>"
+
+#: src/components/examples/I18nExample.tsx:140
+msgid "Это поле для ввода текста"
+msgstr "Это поле для ввода текста"

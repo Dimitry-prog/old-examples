@@ -1,0 +1,204 @@
+# Lefthook configuration for Modern React Stack
+# https://github.com/evilmartians/lefthook
+
+# Минимальная версия Lefthook
+min_version: 1.5.0
+
+# Настройки вывода
+output:
+  - meta
+  - summary
+
+# Цвета в выводе
+colors: true
+
+# Пропускать хуки в CI (можно переопределить через переменные окружения)
+skip_output:
+  - meta
+  - skips
+
+# Pre-commit хуки (выполняются перед коммитом)
+pre-commit:
+  # Параллельное выполнение команд
+  parallel: true
+
+  commands:
+    # Проверка линтинга только для staged файлов
+    lint-staged:
+      # Запускать только для staged файлов
+      glob: "*.{js,jsx,ts,tsx,json,md,yml,yaml}"
+      run: npm run lint:staged
+      stage_fixed: true # Автоматически добавлять исправленные файлы в stage
+
+    # Проверка форматирования
+    format-check:
+      glob: "*.{js,jsx,ts,tsx,json,md,yml,yaml}"
+      run: npm run format:check
+
+    # Проверка типов TypeScript
+    type-check:
+      glob: "*.{ts,tsx}"
+      run: npm run type-check
+
+    # Проверка тестов для измененных файлов
+    test-related:
+      glob: "*.{js,jsx,ts,tsx}"
+      run: npm run test:related
+
+  # Скрипты для выполнения (отключены до создания)
+  # scripts:
+  #   # Проверка размера коммита
+  #   "check-commit-size.sh":
+  #     runner: bash
+  #
+  #   # Проверка конфликтов слияния
+  #   "check-merge-conflicts.sh":
+  #     runner: bash
+
+# Pre-push хуки (выполняются перед отправкой в удаленный репозиторий)
+pre-push:
+  parallel: false # Последовательное выполнение для pre-push
+
+  commands:
+    # 1. Проверка линтинга (быстрая проверка)
+    lint-full:
+      run: npm run lint
+      fail_text: "❌ Linting failed. Please fix the issues and try again."
+
+    # 2. Проверка форматирования
+    format-full:
+      run: npm run format:check
+      fail_text: "❌ Code formatting issues found. Run 'npm run format' to fix."
+
+    # 3. Проверка типов TypeScript
+    type-check-full:
+      run: npm run type-check
+      fail_text: "❌ TypeScript type checking failed. Please fix type errors."
+
+    # 4. Запуск unit тестов
+    test-unit:
+      run: npm run test:unit
+      fail_text: "❌ Unit tests failed. Please fix failing tests."
+
+    # 5. Запуск integration тестов
+    test-integration:
+      run: npm run test:integration
+      fail_text: "❌ Integration tests failed. Please fix failing tests."
+
+    # 6. Проверка покрытия тестов
+    coverage-check:
+      run: npm run test:coverage:check
+      fail_text: "❌ Test coverage is below threshold. Add more tests."
+
+    # 7. Проверка сборки production
+    build-check:
+      run: npm run build
+      fail_text: "❌ Production build failed. Please fix build errors."
+
+    # 8. Проверка размера bundle
+    bundle-size-check:
+      run: npm run build:analyze
+      fail_text: "❌ Bundle size check failed. Bundle might be too large."
+
+    # 9. Проверка безопасности зависимостей
+    security-audit:
+      run: npm audit --audit-level=high
+      fail_text: "❌ Security vulnerabilities found. Please fix them."
+
+    # 10. Проверка дублирования кода
+    duplicate-check:
+      run: npm run check:duplicates
+      fail_text: "❌ Code duplication detected. Please refactor duplicated code."
+
+# Commit-msg хуки (проверка сообщений коммитов)
+commit-msg:
+  commands:
+    # Проверка формата сообщения коммита
+    commitlint:
+      run: npx commitlint --edit {1}
+
+# Post-commit хуки (выполняются после коммита)
+post-commit:
+  commands:
+    # Уведомление об успешном коммите
+    notify:
+      run: echo "✅ Commit successful! Don't forget to push your changes."
+
+# Post-checkout хуки (выполняются после переключения веток)
+post-checkout:
+  commands:
+    # Установка зависимостей при изменении package.json
+    install-deps:
+      files: git diff --name-only HEAD@{1} HEAD
+      glob: "{package.json,package-lock.json,yarn.lock,pnpm-lock.yaml}"
+      run: npm install
+
+    # Очистка кеша при переключении веток
+    clear-cache:
+      run: npm run cache:clear
+
+# Post-merge хуки (выполняются после слияния)
+post-merge:
+  commands:
+    # Установка зависимостей после слияния
+    install-deps:
+      files: git diff --name-only HEAD@{1} HEAD
+      glob: "{package.json,package-lock.json,yarn.lock,pnpm-lock.yaml}"
+      run: npm install
+
+    # Миграции базы данных (если есть)
+    migrate:
+      files: git diff --name-only HEAD@{1} HEAD
+      glob: "migrations/**/*"
+      run: npm run db:migrate
+
+# Настройки для конкретных команд
+settings:
+  # Пропускать хуки для определенных веток
+  skip_on_branches:
+    - main
+    - master
+    - develop
+    - staging
+    - production
+
+  # Пропускать хуки для определенных пользователей
+  skip_on_users:
+    - ci
+    - github-actions
+    - dependabot
+
+  # Пропускать хуки в CI окружении
+  skip_on_ci: false
+
+# Кастомные скрипты
+scripts:
+  # Скрипт для проверки размера коммита
+  check-commit-size.sh: |
+    #!/bin/bash
+    # Проверяем количество измененных файлов
+    files_changed=$(git diff --cached --name-only | wc -l)
+    if [ $files_changed -gt 50 ]; then
+      echo "⚠️  Warning: You're committing $files_changed files. Consider splitting into smaller commits."
+      exit 1
+    fi
+
+  # Скрипт для проверки конфликтов слияния
+  check-merge-conflicts.sh: |
+    #!/bin/bash
+    # Проверяем наличие маркеров конфликтов
+    if git diff --cached --check; then
+      echo "✅ No merge conflict markers found"
+    else
+      echo "❌ Merge conflict markers found in staged files"
+      exit 1
+    fi
+
+# Переменные окружения для хуков
+env:
+  # Отключить интерактивные промпты
+  CI: true
+  # Настройки для Node.js
+  NODE_ENV: development
+  # Настройки для тестов
+  NODE_OPTIONS: "--max-old-space-size=4096"
